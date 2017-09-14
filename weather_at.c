@@ -86,17 +86,18 @@ static char	*create_weather_phrase(char *type, char *temp)
 
 char	*weather_at(char *location)
 {
-	char buf[1000];
-	int fd;
-	int bytes_read;
+	char buf[500];
+	FILE *fp;
 	char *temp[3];
 
-	sprintf(buf, "curl wttr.in/~%s > weather.txt", location);
-	system(buf);
-	fd = open("weather.txt", O_RDONLY);
-	bytes_read = read(fd, buf, 999);
-	close(fd);
-	buf[bytes_read] = '\0';
+	write(1, "2", 1);
+	sprintf(buf, "curl wttr.in/~%s", location);
+	if (!(fp = popen(buf, "r")))
+		exit(1);
+	fread(buf, 499, 1, fp);
+	buf[499] = '\0';
+	if ((pclose(fp) == -1))
+		exit(1);
 	temp[0] = weather_type(buf);
 	temp[1] = temperature(buf);
 	temp[2] = create_weather_phrase(temp[0], temp[1]);

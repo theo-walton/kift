@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <ctype.h>
 # include <fcntl.h>
+# include <limits.h>
 
 #define SECONDS 1
 #define MINUTES 2
